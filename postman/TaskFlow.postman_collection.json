@@ -1,0 +1,32 @@
+{
+  "info": {
+    "name": "TaskFlow API",
+    "description": "Postman collection for TaskFlow FastAPI portfolio project.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "base_url", "value": "http://localhost:8000"}
+  ],
+  "item": [
+    {"name": "Health Check", "request": {"method": "GET", "url": "{{base_url}}/health"}},
+    {"name": "Create User", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Vardhan\",\n  \"email\": \"vardhan@example.com\"\n}"}, "url": "{{base_url}}/users"}},
+    {"name": "List Users", "request": {"method": "GET", "url": "{{base_url}}/users"}},
+    {"name": "Get User", "request": {"method": "GET", "url": "{{base_url}}/users/1"}},
+    {"name": "Update User", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Vardhan Kumar\"\n}"}, "url": "{{base_url}}/users/1"}},
+    {"name": "Delete User", "request": {"method": "DELETE", "url": "{{base_url}}/users/1"}},
+    {"name": "Create Project", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Interview Preparation\",\n  \"description\": \"Track DSA and backend preparation\",\n  \"owner_id\": 1\n}"}, "url": "{{base_url}}/projects"}},
+    {"name": "List Projects", "request": {"method": "GET", "url": "{{base_url}}/projects"}},
+    {"name": "Get Project", "request": {"method": "GET", "url": "{{base_url}}/projects/1"}},
+    {"name": "Update Project", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"description\": \"Updated description\"\n}"}, "url": "{{base_url}}/projects/1"}},
+    {"name": "Delete Project", "request": {"method": "DELETE", "url": "{{base_url}}/projects/1"}},
+    {"name": "Create Task", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Complete graph problems\",\n  \"status\": \"pending\",\n  \"priority\": \"high\",\n  \"project_id\": 1,\n  \"assignee_id\": 1\n}"}, "url": "{{base_url}}/tasks"}},
+    {"name": "List Tasks", "request": {"method": "GET", "url": "{{base_url}}/tasks"}},
+    {"name": "Filter Tasks", "request": {"method": "GET", "url": "{{base_url}}/tasks?project_id=1&status=pending&priority=high"}},
+    {"name": "Get Task", "request": {"method": "GET", "url": "{{base_url}}/tasks/1"}},
+    {"name": "Update Task", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"priority\": \"medium\"\n}"}, "url": "{{base_url}}/tasks/1"}},
+    {"name": "Update Task Status", "request": {"method": "PATCH", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"status\": \"completed\"\n}"}, "url": "{{base_url}}/tasks/1/status"}},
+    {"name": "Delete Task", "request": {"method": "DELETE", "url": "{{base_url}}/tasks/1"}},
+    {"name": "Overview Stats", "request": {"method": "GET", "url": "{{base_url}}/stats/overview"}},
+    {"name": "Project Stats", "request": {"method": "GET", "url": "{{base_url}}/stats/projects/1"}}
+  ]
+}
