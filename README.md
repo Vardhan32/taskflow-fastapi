@@ -1,10 +1,6 @@
 # TaskFlow FastAPI
 
-TaskFlow is a clean, interview-friendly RESTful backend service for managing users, projects, and tasks. It is built with **FastAPI**, **async SQLAlchemy**, **MySQL**, and **Docker** and demonstrates API design, relational schema modeling, validation, filtering, indexing, and structured HTTP responses.
-
-## Why this project?
-
-The project is intentionally scoped like a realistic entry-level backend system: large enough to demonstrate backend engineering fundamentals, but small enough to understand end-to-end and explain confidently in an interview.
+TaskFlow is a REST API for managing users, projects, and tasks. I built it with FastAPI, SQLAlchemy, MySQL, and Docker to practice building a backend application with database relationships, validation, filtering, pagination, and API documentation.
 
 ## Tech Stack
 
@@ -15,23 +11,24 @@ The project is intentionally scoped like a realistic entry-level backend system:
 - Pydantic
 - Docker & Docker Compose
 - Uvicorn
-- Postman / Swagger UI for API testing
+- Postman and Swagger UI
 
 ## Features
 
-- 19 REST endpoints across health, users, projects, tasks, and statistics
-- Async database access with SQLAlchemy `AsyncSession`
-- Relational MySQL schema with foreign keys and cascading behavior
-- Input validation using Pydantic schemas
-- Pagination and task filtering
+- Create, view, update, and delete users, projects, and tasks
+- Async database access using SQLAlchemy `AsyncSession`
+- MySQL relationships using primary keys and foreign keys
+- Input validation with Pydantic
+- Task filtering by project, assignee, status, priority, and due date
+- Pagination for task results
 - Task status and priority enums
-- Unique email constraint and conflict handling
-- Indexed foreign keys plus composite task indexes
-- Consistent HTTP status codes (`201`, `204`, `404`, `409`, `422`)
-- Dockerized API and MySQL services
-- Auto-generated Swagger/OpenAPI docs
+- Unique email validation and conflict handling
+- Database indexes for commonly queried fields
+- HTTP status handling for common API cases
+- Docker setup for the API and MySQL
+- Swagger/OpenAPI documentation
 
-## Architecture
+## How It Works
 
 ```text
 Client / Postman
@@ -57,7 +54,9 @@ User 1 ------ N Task (assignee)
 Project 1 --- N Task
 ```
 
-Deleting a project deletes its tasks. Deleting an assignee keeps the task and sets `assignee_id` to `NULL`.
+A user can own multiple projects, and a project can contain multiple tasks. A user can also be assigned to multiple tasks.
+
+If a project is deleted, its tasks are deleted as well. If an assigned user is deleted, the task remains and `assignee_id` is set to `NULL`.
 
 ## Project Structure
 
@@ -86,28 +85,27 @@ taskflow-fastapi/
 └── requirements.txt
 ```
 
-## Run with Docker
+## Running the Project
 
-1. Clone the repository.
-2. Create your environment file:
+Clone the repository and create the environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-3. Start the API and MySQL:
+Start the API and MySQL containers:
 
 ```bash
 docker compose up --build
 ```
 
-4. Open:
+Once the application is running:
 
 - API: `http://localhost:8000`
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
-## Example Workflow
+## Example
 
 Create a user:
 
@@ -128,8 +126,8 @@ POST /projects
 Content-Type: application/json
 
 {
-  "name": "Interview Preparation",
-  "description": "Track DSA and backend preparation",
+  "name": "Website Redesign",
+  "description": "Track work for the website redesign",
   "owner_id": 1
 }
 ```
@@ -141,7 +139,7 @@ POST /tasks
 Content-Type: application/json
 
 {
-  "title": "Complete graph problems",
+  "title": "Create landing page API",
   "priority": "high",
   "status": "pending",
   "project_id": 1,
@@ -157,33 +155,15 @@ GET /tasks?project_id=1&status=pending&priority=high
 
 ## API Documentation
 
-A concise endpoint list is available in [`docs/API_ENDPOINTS.md`](docs/API_ENDPOINTS.md). For full request/response schemas, run the application and use Swagger UI at `/docs`.
+A list of available endpoints is available in [`docs/API_ENDPOINTS.md`](docs/API_ENDPOINTS.md).
 
-## Interview Talking Points
+For request and response schemas, the application also provides Swagger UI at `/docs` and ReDoc at `/redoc`.
 
-This project can be used to explain:
+## Things I Want to Add
 
-- REST resources and HTTP methods
-- CRUD operations
-- request/response validation
-- primary keys and foreign keys
-- one-to-many relationships
-- database normalization
-- indexes and why they help frequent filters
-- async request/database flow
-- Docker containerization
-- API testing with Postman and Swagger
-- common status codes and defensive error handling
-
-## Future Improvements
-
-- JWT authentication and authorization
-- Alembic database migrations
-- pytest integration tests
+- Authentication and authorization
+- Alembic migrations
+- Automated tests with pytest
 - Redis caching
 - CI/CD with GitHub Actions
-- deployment to Google Cloud Run
-
-## License
-
-This project is intended for learning, portfolio use, and interview preparation.
+- Deployment to Google Cloud Run
