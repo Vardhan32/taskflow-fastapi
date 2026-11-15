@@ -9,16 +9,18 @@ from app.routers import projects, stats, tasks, users
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    try:
-        async with engine.begin() as connection:
-            await connection.run_sync(Base.metadata.create_all)
-    except Exception:
-        pass
+    if settings.environment != "testing":
+        try:
+            async with engine.begin() as connection:
+                await connection.run_sync(Base.metadata.create_all)
+        except Exception:
+            pass
     yield
-    try:
-        await engine.dispose()
-    except Exception:
-        pass
+    if settings.environment != "testing":
+        try:
+            await engine.dispose()
+        except Exception:
+            pass
 
 
 app = FastAPI(

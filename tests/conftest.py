@@ -40,12 +40,18 @@ async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
+from app.config import settings
+
+settings.environment = "testing"
+settings.database_url = "sqlite+aiosqlite:///:memory:"
+
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
 async def test_lifespan(_):
     yield
 
+app.lifespan_context = test_lifespan
 app.router.lifespan_context = test_lifespan
 app.dependency_overrides[get_db] = override_get_db
 
