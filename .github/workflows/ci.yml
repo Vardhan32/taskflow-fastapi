@@ -20,5 +20,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run test suite
+        env:
+          DATABASE_URL: sqlite+aiosqlite:///:memory:
         run: |
           pytest -v
