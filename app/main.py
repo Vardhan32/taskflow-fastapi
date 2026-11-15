@@ -9,14 +9,14 @@ from app.routers import projects, stats, tasks, users
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    if settings.environment != "testing":
+    if settings.environment != "testing" and not settings.database_url.startswith("sqlite"):
         try:
             async with engine.begin() as connection:
                 await connection.run_sync(Base.metadata.create_all)
         except Exception:
             pass
     yield
-    if settings.environment != "testing":
+    if settings.environment != "testing" and not settings.database_url.startswith("sqlite"):
         try:
             await engine.dispose()
         except Exception:
