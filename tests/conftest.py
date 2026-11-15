@@ -40,6 +40,13 @@ async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def test_lifespan(_):
+    yield
+
+app.router.lifespan_context = test_lifespan
 app.dependency_overrides[get_db] = override_get_db
 
 
